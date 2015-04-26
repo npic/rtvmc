@@ -1,0 +1,32 @@
+proc length 2 period 51000
+syncuart
+stop
+
+proc length 24 period 30
+var flag
+push $flag
+get
+push @end
+jt
+push 72
+uartout
+push 101
+uartout
+push 108
+uartout
+push 108
+uartout
+push 111
+uartout
+push 33
+uartout
+push 13
+uartout
+push 10
+uartout
+push 1
+push $flag
+store
+end:
+stop
+

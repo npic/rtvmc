@@ -1,0 +1,15 @@
+proc length 1 period 0
+stop
+
+proc length 4 period 8
+push 65
+uartout
+syncuart
+stop
+
+proc length 4 period 8
+push 66
+uartout
+syncuart
+stop
+
