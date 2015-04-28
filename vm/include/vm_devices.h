@@ -20,7 +20,6 @@ struct vm_uart_t
 };
 
 errcode_t init_uart(vm_uart_t * uart);
-errcode_t sync_uart(vm_uart_t * uart);
 errcode_t check_queue(uart_queue_t * q);
 errcode_t enqueue(uart_queue_t * q, char c);
 errcode_t dequeue(uart_queue_t * q, char * result);

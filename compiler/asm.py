@@ -88,8 +88,6 @@ for line in program:
         current_offset += 1
     elif line[0] == "lt":
         current_offset += 1
-    elif line[0] == "syncuart":
-        current_offset += 1
     else:
         print line[0]
         print "Unknown opcode"
@@ -212,9 +210,6 @@ for line in program:
         current_offset += 1
     elif line[0] == "lt":
         code.append(0x1A)
-        current_offset += 1
-    elif line[0] == "syncuart":
-        code.append(0x1B)
         current_offset += 1
     else:
         print line[0]

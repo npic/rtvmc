@@ -32,7 +32,6 @@
 #define OPC_LEQ 0x18
 #define OPC_GT 0x19
 #define OPC_LT 0x1A
-#define OPC_SYNCUART 0x1B
 
 errcode_t op_stop(vm_t * vm);
 errcode_t op_push(vm_t * vm);
@@ -60,7 +59,6 @@ errcode_t op_geq(vm_t * vm);
 errcode_t op_leq(vm_t * vm);
 errcode_t op_gt(vm_t * vm);
 errcode_t op_lt(vm_t * vm);
-errcode_t op_syncuart(vm_t * vm);
 
 #endif
 

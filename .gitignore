@@ -33,3 +33,6 @@
 
 /vm/vm
 *.dat
+*.bin
+# TODO: SDK stuff should be also ignored
+

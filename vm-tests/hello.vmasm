@@ -1,5 +1,4 @@
-proc length 2 period 51000
-syncuart
+proc length 1 period 51000
 stop
 
 proc length 24 period 30

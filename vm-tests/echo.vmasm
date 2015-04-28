@@ -1,5 +1,4 @@
 proc period 0 length 1
-syncuart
 stop
 
 proc period 32 length 16

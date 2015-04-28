@@ -344,11 +344,3 @@ errcode_t op_lt(vm_t * vm)
     return OK;
 }
 
-errcode_t op_syncuart(vm_t * vm)
-{
-    errcode_t retval;
-    retval = sync_uart(&vm->uart);
-    CHECK_OK(retval, "Failed to synchronize UART\n");
-    return OK;
-}
-

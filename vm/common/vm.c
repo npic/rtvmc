@@ -162,9 +162,6 @@ errcode_t step(vm_t * vm)
         case OPC_LT:
             retval = op_lt(vm);
             break;
-        case OPC_SYNCUART:
-            retval = op_syncuart(vm);
-            break;
         default:
             vm->is_halted = 1;
             FAIL(BAD_OPCODE, "Unknown opcode\n");
