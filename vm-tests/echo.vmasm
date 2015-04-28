@@ -2,7 +2,7 @@ proc period 0 length 1
 syncuart
 stop
 
-proc period 60000 length 16
+proc period 32 length 16
 var symbol
 push $symbol
 get

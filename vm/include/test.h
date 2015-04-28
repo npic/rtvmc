@@ -11,7 +11,8 @@ struct test_t
 {
     vm_t uut;
     uint16_t test_length;
-    char input[TEST_SIZE];
+    uint16_t input_size;
+    unsigned char input[TEST_SIZE];
     uint16_t timings[TEST_SIZE];
     FILE * uart_out;
     FILE * schedules[VM_PROC_TABLE_SIZE];

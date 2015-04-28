@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "test.h"
+#include "vm_devices.h"
 
 errcode_t init_test(test_t * test, const char * programfile, const char * testfile)
 {
@@ -17,7 +18,14 @@ errcode_t init_test(test_t * test, const char * programfile, const char * testfi
     CHECK_NOT_NULL(in, IO, "Failed to open test file\n");
     fscanf(in, "%hu", &test->test_length);
     CHECK_NOT_FERROR(in);
-    /* TODO: read inputs, timings, open uart_out */
+    /* TODO: open uart_out */
+    test->input_size = 0;
+    while (!feof(in))
+    {
+        fscanf(in, "%hu %hx", &test->timings[test->input_size], &i);
+        test->input[test->input_size] = (unsigned char)i;
+        test->input_size++;
+    }
     fclose(in);
 
     for (i = 0; i < test->uut.proc_table_size; i++)
@@ -47,6 +55,14 @@ errcode_t test_step(test_t * test)
         }
     }
     /* TODO: IO stuff */
+    for (i = 0; i < test->input_size; i++)
+    {
+        if (test->timings[i] == test->uut.time)
+        {
+            retval = enqueue(&test->uut.uart.in, test->input[i]);
+            CHECK_OK(retval, "Failed to enqueue a test input\n");
+        }
+    }
     retval = step(&test->uut);
     CHECK_OK(retval, "Failed to execute instruction\n");
     if (test->uut.time >= test->test_length)
