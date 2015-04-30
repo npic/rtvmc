@@ -13,7 +13,7 @@ program = fin.readlines()
 program = map(lambda x: x.strip().split(), program)
 fin.close()
 
-proc_lengths = []
+proc_code_sizes = []
 
 offsets = {}
 current_offset = 0
@@ -27,7 +27,7 @@ for line in program:
     elif line[0].endswith(':'):
         offsets[line[0][:-1]] = current_offset
     elif line[0].startswith("proc"):
-        proc_lengths.append(current_offset)
+        proc_code_sizes.append(current_offset)
         current_offset = 0
         current_var_offset = 0
         continue
@@ -92,11 +92,13 @@ for line in program:
         print line[0]
         print "Unknown opcode"
         sys.exit(1)
-proc_lengths.append(current_offset)
-proc_lengths = proc_lengths[1:]
+proc_code_sizes.append(current_offset)
+proc_code_sizes = proc_code_sizes[1:]
 
 N = 0
 code = []
+proc_lengths = []
+proc_periods = []
 current_offset = 0
 for line in program:
     if line == []:
@@ -110,16 +112,16 @@ for line in program:
         length = 0
         for i in range(1, 4, 2):
             if line[i] == "period":
-                period = int(line[i+1])
+                proc_periods.append(int(line[i+1]))
             elif line[i] == "length":
-                length = int(line[i+1])
+                proc_lengths.append(int(line[i+1]))
             else:
                 print line[i]
                 print "Unknown directive of proc"
                 sys.exit(1)
-        code += mk16bit(period)
-        code += mk16bit(length)
+        code += mk16bit(proc_periods[N])
         code += mk16bit(proc_lengths[N])
+        code += mk16bit(proc_code_sizes[N])
         N += 1
         current_offset = 0
         continue
@@ -215,6 +217,12 @@ for line in program:
         print line[0]
         print "Uknown opcode"
         sys.exit(1)
+
+U = sum( [float(proc_lengths[i]) / float(proc_periods[i]) for i in range(1, N)] )
+threshold = (N-1.0) * (2.0 ** (1.0 / (N-1.0)) - 1.0)
+if U > threshold:
+    print U, ">", threshold
+    print "Task set is not surely schedulable - aborting"
 
 filename = filename.replace(".vmasm", ".bin")
 fout = open(filename, "w")
