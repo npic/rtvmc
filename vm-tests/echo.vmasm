@@ -10,8 +10,10 @@ push @nooutput
 jt
 push $symbol
 get
-dup
-dup
+push $symbol
+get
+push $symbol
+get
 uartout
 uartout
 uartout

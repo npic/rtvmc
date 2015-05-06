@@ -7,125 +7,131 @@ def mk16bit(number):
     lo = number % 256
     return [hi, lo]
 
+class Process:
+    def __init__(self, ci, ti):
+        self.length = ci
+        self.period = ti
+        self.labels = {}
+        self.variables = {}
+        self.code_size = 0
+        self.var_offset = 0
+        return
+
 filename = sys.argv[1]
 fin = open(filename, "r")
 program = fin.readlines()
 program = map(lambda x: x.strip().split(), program)
 fin.close()
 
-proc_code_sizes = []
-
-offsets = {}
-current_offset = 0
-
-variables = {}
-current_var_offset = 0
+procs = []
+current_proc = None
 
 for line in program:
     if line == []:
         continue
     elif line[0].endswith(':'):
-        offsets[line[0][:-1]] = current_offset
+        current_proc.labels[line[0][:-1]] = current_proc.code_size
     elif line[0].startswith("proc"):
-        proc_code_sizes.append(current_offset)
-        current_offset = 0
-        current_var_offset = 0
-        continue
-    elif line[0].startswith("var"):
-        if line[1] not in variables.keys():
-            variables[line[1]] = current_var_offset
-            current_var_offset += 1
-            #TODO better clash protection
-    elif line[0] == "stop":
-        current_offset += 1
-    elif line[0] == "nop":
-        current_offset += 1
-    elif line[0] == "push":
-        current_offset += 2
-    elif line[0] == "bxor":
-        current_offset += 1
-    elif line[0] == "drop":
-        current_offset += 1
-    elif line[0] == "add":
-        current_offset += 1
-    elif line[0] == "sub":
-        current_offset += 1
-    elif line[0] == "mul":
-        current_offset += 1
-    elif line[0] == "div":
-        current_offset += 1
-    elif line[0] == "mod":
-        current_offset += 1
-    elif line[0] == "not":
-        current_offset += 1
-    elif line[0] == "and":
-        current_offset += 1
-    elif line[0] == "or":
-        current_offset += 1
-    elif line[0] == "bnot":
-        current_offset += 1
-    elif line[0] == "band":
-        current_offset += 1
-    elif line[0] == "bor":
-        current_offset += 1
-    elif line[0] == "uartin":
-        current_offset += 1
-    elif line[0] == "uartout":
-        current_offset += 1
-    elif line[0] == "store":
-        current_offset += 1
-    elif line[0] == "get":
-        current_offset += 1
-    elif line[0] == "jt":
-        current_offset += 1
-    elif line[0] == "eq":
-        current_offset += 1
-    elif line[0] == "neq":
-        current_offset += 1
-    elif line[0] == "geq":
-        current_offset += 1
-    elif line[0] == "leq":
-        current_offset += 1
-    elif line[0] == "gt":
-        current_offset += 1
-    elif line[0] == "lt":
-        current_offset += 1
-    else:
-        print line[0]
-        print "Unknown opcode"
-        sys.exit(1)
-proc_code_sizes.append(current_offset)
-proc_code_sizes = proc_code_sizes[1:]
-
-N = 0
-code = []
-proc_lengths = []
-proc_periods = []
-current_offset = 0
-for line in program:
-    if line == []:
-        continue
-    elif line[0].endswith(':'):
-        continue
-    elif line[0].startswith("var"):
-        continue
-    elif line[0].startswith("proc"):
+        if current_proc:
+            procs.append(current_proc)
         period = 0
         length = 0
         for i in range(1, 4, 2):
             if line[i] == "period":
-                proc_periods.append(int(line[i+1]))
+                period = int(line[i+1])
             elif line[i] == "length":
-                proc_lengths.append(int(line[i+1]))
+                length = int(line[i+1])
             else:
                 print line[i]
                 print "Unknown directive of proc"
                 sys.exit(1)
-        code += mk16bit(proc_periods[N])
-        code += mk16bit(proc_lengths[N])
-        code += mk16bit(proc_code_sizes[N])
-        N += 1
+        current_proc = Process(length, period)
+        continue
+    elif line[0].startswith("var"):
+        if line[1] not in current_proc.variables.keys():
+            current_proc.variables[line[1]] = current_proc.var_offset
+            current_proc.var_offset += 1
+    elif line[0] == "stop":
+        current_proc.code_size += 1
+    elif line[0] == "nop":
+        current_proc.code_size += 1
+    elif line[0] == "push":
+        current_proc.code_size += 2
+    elif line[0] == "bxor":
+        current_proc.code_size += 1
+    elif line[0] == "drop":
+        current_proc.code_size += 1
+    elif line[0] == "add":
+        current_proc.code_size += 1
+    elif line[0] == "sub":
+        current_proc.code_size += 1
+    elif line[0] == "mul":
+        current_proc.code_size += 1
+    elif line[0] == "div":
+        current_proc.code_size += 1
+    elif line[0] == "mod":
+        current_proc.code_size += 1
+    elif line[0] == "not":
+        current_proc.code_size += 1
+    elif line[0] == "and":
+        current_proc.code_size += 1
+    elif line[0] == "or":
+        current_proc.code_size += 1
+    elif line[0] == "bnot":
+        current_proc.code_size += 1
+    elif line[0] == "band":
+        current_proc.code_size += 1
+    elif line[0] == "bor":
+        current_proc.code_size += 1
+    elif line[0] == "uartin":
+        current_proc.code_size += 1
+    elif line[0] == "uartout":
+        current_proc.code_size += 1
+    elif line[0] == "store":
+        current_proc.code_size += 1
+    elif line[0] == "get":
+        current_proc.code_size += 1
+    elif line[0] == "jt":
+        current_proc.code_size += 1
+    elif line[0] == "eq":
+        current_proc.code_size += 1
+    elif line[0] == "neq":
+        current_proc.code_size += 1
+    elif line[0] == "geq":
+        current_proc.code_size += 1
+    elif line[0] == "leq":
+        current_proc.code_size += 1
+    elif line[0] == "gt":
+        current_proc.code_size += 1
+    elif line[0] == "lt":
+        current_proc.code_size += 1
+    else:
+        print line[0]
+        print "Unknown opcode"
+        sys.exit(1)
+procs.append(current_proc)
+
+N = len(procs)
+code = [N]
+i = None
+current_offset = None
+
+for line in program:
+    if line == []:
+        continue
+    elif line[0].endswith(':'):
+        continue
+    elif line[0].startswith("var"):
+        continue
+    elif line[0].startswith("proc"):
+        if i is None:
+            i = 0
+        else:
+            i += 1
         current_offset = 0
+        code += mk16bit(procs[i].period)
+        code += mk16bit(procs[i].length)
+        code += mk16bit(procs[i].code_size)
         continue
     elif line[0] == "stop":
         code.append(0x00)
@@ -138,9 +144,9 @@ for line in program:
         current_offset += 2
         value = line[1]
         if value.startswith("@"):
-            code.append(offsets[value[1:]] - current_offset - 1)
+            code.append(procs[i].labels[value[1:]] - current_offset - 1)
         elif value.startswith("$"):
-            code.append(variables[value[1:]])
+            code.append(procs[i].variables[value[1:]])
         else:
             code.append(int(value))
     elif line[0] == "bxor":
@@ -220,7 +226,7 @@ for line in program:
         print "Uknown opcode"
         sys.exit(1)
 
-U = sum( [float(proc_lengths[i]) / float(proc_periods[i]) for i in range(1, N)] )
+U = sum( [float(procs[i].length) / float(procs[i].period) for i in range(1, N)] )
 threshold = (N-1.0) * (2.0 ** (1.0 / (N-1.0)) - 1.0)
 if U > threshold:
     print U, ">", threshold
@@ -228,7 +234,6 @@ if U > threshold:
 
 filename = filename.replace(".vmasm", ".bin")
 fout = open(filename, "w")
-fout.write(bytearray([N]))
 fout.write(bytearray(code))
 fout.close();
 
