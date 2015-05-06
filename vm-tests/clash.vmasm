@@ -1,0 +1,21 @@
+proc length 1 period 0
+stop
+
+proc length 3 period 10
+var c
+var c
+var b
+var a
+push $a
+uartout
+stop
+
+proc length 3 period 10
+var b
+var a
+var c
+var a
+push $a
+uartout
+stop
+
