@@ -232,6 +232,7 @@ if U > threshold:
     print U, ">", threshold
     print "Task set is not surely schedulable - aborting"
 
+code = map(lambda x: 256 + x if x < 0 else x, code)
 filename = filename.replace(".vmasm", ".bin")
 fout = open(filename, "w")
 fout.write(bytearray(code))

@@ -11,6 +11,7 @@ int ex(nodeType *p) {
     switch(p->type) {
     case typeHdr:       
         printf("proc length %d period %d\n", p->hdr.ci, p->hdr.ti); 
+        break;
     case typeCon:       
         printf("push %d\n", p->con.value); 
         break;

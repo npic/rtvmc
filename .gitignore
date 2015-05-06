@@ -33,6 +33,9 @@
 
 /vm/vm
 /compiler/compiler
+/compiler/lex.yy.c
+/compiler/y.tab.c
+/compiler/y.tab.h
 *.dat
 *.bin
 # TODO: SDK stuff should be also ignored
