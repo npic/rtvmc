@@ -32,15 +32,17 @@ for line in program:
         current_var_offset = 0
         continue
     elif line[0].startswith("var"):
-        variables[line[1]] = current_var_offset
-        current_var_offset += 1
+        if line[1] not in variables.keys():
+            variables[line[1]] = current_var_offset
+            current_var_offset += 1
+            #TODO better clash protection
     elif line[0] == "stop":
         current_offset += 1
     elif line[0] == "nop":
         current_offset += 1
     elif line[0] == "push":
         current_offset += 2
-    elif line[0] == "dup":
+    elif line[0] == "bxor":
         current_offset += 1
     elif line[0] == "drop":
         current_offset += 1
@@ -141,7 +143,7 @@ for line in program:
             code.append(variables[value[1:]])
         else:
             code.append(int(value))
-    elif line[0] == "dup":
+    elif line[0] == "bxor":
         code.append(0x03)
         current_offset += 1
     elif line[0] == "drop":

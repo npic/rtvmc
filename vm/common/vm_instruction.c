@@ -24,16 +24,17 @@ errcode_t op_push(vm_t * vm)
     return OK;
 }
 
-errcode_t op_dup(vm_t * vm)
+errcode_t op_bxor(vm_t * vm)
 {
     errcode_t retval;
-    int8_t val;
-    retval = stack_pop(vm, &val);
-    CHECK_OK(retval, "Failed to pop from the stack\n");
-    retval = stack_push(vm, &val);
-    CHECK_OK(retval, "Failed to push into the stack\n");
-    retval = stack_push(vm, &val);
-    CHECK_OK(retval, "Failed to push into the stack\n");
+    int8_t op1, op2;
+    retval = stack_pop(vm, &op2);
+    CHECK_OK(retval, "Failed to pop op #2 from the stack\n");
+    retval = stack_pop(vm, &op1);
+    CHECK_OK(retval, "Failed to pop op #1 from the stack\n");
+    op1 = op1 ^ op2;
+    retval = stack_push(vm, &op1);
+    CHECK_OK(retval, "Failed to push result into the stack\n");
     return OK;
 }
 

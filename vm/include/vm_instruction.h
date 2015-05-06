@@ -8,7 +8,7 @@
 #define OPC_STOP 0x00
 #define OPC_NOP 0x01
 #define OPC_PUSH 0x02
-#define OPC_DUP 0x03
+#define OPC_BXOR 0x03
 #define OPC_DROP 0x04
 #define OPC_ADD 0x05
 #define OPC_SUB 0x06
@@ -35,7 +35,7 @@
 
 errcode_t op_stop(vm_t * vm);
 errcode_t op_push(vm_t * vm);
-errcode_t op_dup(vm_t * vm);
+errcode_t op_bxor(vm_t * vm);
 errcode_t op_drop(vm_t * vm);
 errcode_t op_add(vm_t * vm);
 errcode_t op_sub(vm_t * vm);

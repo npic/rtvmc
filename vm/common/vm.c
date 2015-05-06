@@ -90,8 +90,8 @@ errcode_t step(vm_t * vm)
         case OPC_PUSH:
             retval = op_push(vm);
             break;
-        case OPC_DUP:
-            retval = op_dup(vm);
+        case OPC_BXOR:
+            retval = op_bxor(vm);
             break;
         case OPC_DROP:
             retval = op_drop(vm);
