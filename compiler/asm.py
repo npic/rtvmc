@@ -231,6 +231,7 @@ threshold = (N-1.0) * (2.0 ** (1.0 / (N-1.0)) - 1.0)
 if U > threshold:
     print U, ">", threshold
     print "Task set is not surely schedulable - aborting"
+    sys.exit(2)
 
 code = map(lambda x: 256 + x if x < 0 else x, code)
 filename = filename.replace(".vmasm", ".bin")

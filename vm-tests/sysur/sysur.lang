@@ -1,6 +1,6 @@
 process soft {;}
 
-process Ci=500 Ti=1000
+process Ci=75 Ti=500
 {
     input a;
     input b;
@@ -16,7 +16,7 @@ process Ci=500 Ti=1000
     output y;
 }
 
-process Ci=100 Ti=700
+process Ci=323 Ti=500
 {
     a = 0;
     while(a < 20)
