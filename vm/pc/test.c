@@ -7,6 +7,7 @@ errcode_t init_test(test_t * test, const char * programfile, const char * testfi
     errcode_t retval;
     FILE * in;
     uint16_t i;
+    int16_t next_uartin_value;
     char schedname[256];
 
     retval = init_vm(&test->uut);
@@ -27,8 +28,8 @@ errcode_t init_test(test_t * test, const char * programfile, const char * testfi
     test->input_size = 0;
     while (!feof(in))
     {
-        fscanf(in, "%hu %hu", &test->timings[test->input_size], &i);
-        test->input[test->input_size] = (unsigned char)i;
+        fscanf(in, "%hu %hd", &test->timings[test->input_size], &next_uartin_value);
+        test->input[test->input_size] = (char)next_uartin_value;
         test->input_size++;
     }
     test->input_size--;  /* discard excessive read */
@@ -67,7 +68,7 @@ errcode_t test_step(test_t * test)
         {
             retval = enqueue(&test->uut.uart.in, test->input[i]);
             CHECK_OK(retval, "Failed to enqueue a test input\n");
-            fprintf(test->uart_in, "%hu %hu\n", test->uut.time, (uint16_t)test->input[i]);
+            fprintf(test->uart_in, "%hu %hd\n", test->uut.time, (int16_t)test->input[i]);
             CHECK_NOT_FERROR(test->uart_in);
             break;
         }
@@ -79,7 +80,7 @@ errcode_t test_step(test_t * test)
     }
     retval = dequeue(&test->uut.uart.out, &uart_out_char);
     CHECK_OK(retval, "Failed to dequeue from UART out\n");
-    fprintf(test->uart_out, "%hu %hu\n", test->uut.time, (uint16_t)uart_out_char);
+    fprintf(test->uart_out, "%hu %hd\n", test->uut.time, (int16_t)uart_out_char);
     CHECK_NOT_FERROR(test->uart_out);
     retval = step(&test->uut);
     CHECK_OK(retval, "Failed to execute instruction\n");

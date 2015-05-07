@@ -12,7 +12,7 @@ struct test_t
     vm_t uut;
     uint16_t test_length;
     uint16_t input_size;
-    unsigned char input[TEST_SIZE];
+    char input[TEST_SIZE];
     uint16_t timings[TEST_SIZE];
     FILE * uart_in;
     FILE * uart_out;
