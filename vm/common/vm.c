@@ -5,7 +5,7 @@
 errcode_t init_vm(vm_t * vm)
 {
     errcode_t retval;
-    vm_mem_ptr_t i;
+    vm_mem_ptr_t i, index;
 
     retval = init_uart(&vm->uart);
     CHECK_OK(retval, "Failed to init UART\n");
@@ -13,29 +13,29 @@ errcode_t init_vm(vm_t * vm)
     vm->PP = 0;
     vm->proc_table_size = 0;
 
-    for (i = 0; i < VM_PROC_TABLE_SIZE; i++)
+    for (index = 0; index < VM_PROC_TABLE_SIZE; index++)
     {
-        vm->proc_table[i].period = 0;
-        vm->proc_table[i].length = 0;
-        vm->proc_table[i].is_released = 0;
-        vm->proc_table[i].SP = 0;
-        vm->proc_table[i].CP = 0;
-        vm->proc_table[i].current_observed_time = 0;
-        vm->proc_table[i].max_observed_time = 0;
+        vm->proc_table[index].period = 0;
+        vm->proc_table[index].length = 0;
+        vm->proc_table[index].is_released = 0;
+        vm->proc_table[index].SP = 0;
+        vm->proc_table[index].CP = 0;
+        vm->proc_table[index].current_observed_time = 0;
+        vm->proc_table[index].max_observed_time = 0;
 
         for (i = 0; i < VM_STACK_SIZE; i++)
         {
-            vm->proc_table[i].stack[i] = 0;
+            vm->proc_table[index].stack[i] = 0;
         }
 
         for (i = 0; i < VM_MEM_SIZE; i++)
         {
-            vm->proc_table[i].memory[i] = 0;
+            vm->proc_table[index].memory[i] = 0;
         }
 
         for (i = 0; i < VM_CODE_SIZE; i++)
         {
-            vm->proc_table[i].code[i] = 0;
+            vm->proc_table[index].code[i] = 0;
         }
     }
 

@@ -1,6 +1,4 @@
 #include <stdlib.h>
-#include <termios.h>
-#include <unistd.h>
 #include "test.h"
 #include "vm.h"
 

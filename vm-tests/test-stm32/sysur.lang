@@ -1,0 +1,28 @@
+process soft {;}
+
+process Ci=75 Ti=500
+{
+    a = 2;
+    b = -1;
+    c = 5;
+    d = 3;
+    e = -1;
+    f = 7;
+
+    x = (c*e - b*f) / (a*e - b*d);
+    y = (a*f - c*d) / (a*e - b*d);
+}
+
+process Ci=323 Ti=500
+{
+    a = 0;
+    while(a < 20)
+    {
+        a = a+1;
+        if(a == 14)
+        {
+            return;
+        }
+    }
+}
+

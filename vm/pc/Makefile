@@ -22,12 +22,6 @@ windows: pc
 
 pc: vm.o error.o test.o
 
-vm.o: vm.c
-	${CC} ${CFLAGS} ${INCLUDE} -c -o vm.o vm.c
-
-error.o: error.c
-	${CC} ${CFLAGS} ${INCLUDE} -c -o error.o error.c
-
-test.o: test.c
-	${CC} ${CFLAGS} ${INCLUDE} -c -o test.o test.c
+%.o: %.c
+	${CC} ${CFLAGS} ${INCLUDE} -c $< -o $@
 

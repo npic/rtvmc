@@ -203,7 +203,7 @@ errcode_t op_uartin(vm_t * vm)
     char result = 0;
     retval = uart_read(&vm->uart, &result);
     CHECK_OK(retval, "Failed to read from the UART queue\n");
-    retval = stack_push(vm, &result);
+    retval = stack_push(vm, (int8_t*)&result);
     CHECK_OK(retval, "Failed to push result into the stack\n");
     return OK;
 }
@@ -212,7 +212,7 @@ errcode_t op_uartout(vm_t * vm)
 {
     errcode_t retval;
     char c;
-    retval = stack_pop(vm, &c);
+    retval = stack_pop(vm, (int8_t*)&c);
     CHECK_OK(retval, "Failed to pop op from the stack\n");
     retval = uart_write(&vm->uart, c);
     CHECK_OK(retval, "Failed to read from the UART queue\n");
