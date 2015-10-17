@@ -1,0 +1,14 @@
+process soft {;}
+
+process Ci=7 Ti=1000
+{
+    x = 1;
+    output x;
+}
+
+process Ci=7 Ti=1500
+{
+    x = 0;
+    output x;
+}
+

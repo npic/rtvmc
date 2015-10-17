@@ -1,3 +1,5 @@
+#include "stm32f4xx_hal.h"
+#include "stm32f4xx_nucleo.h"
 #include "vm_devices.h"
 
 errcode_t init_uart(vm_uart_t * uart)
@@ -10,6 +12,7 @@ errcode_t init_uart(vm_uart_t * uart)
     }
     uart->in.queue_start = uart->in.queue_end = uart->in.queue;
     uart->out.queue_start = uart->out.queue_end = uart->out.queue;
+    BSP_LED_Init(LED2);
     return OK;
 }
 

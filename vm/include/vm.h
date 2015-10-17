@@ -14,20 +14,21 @@ struct vm_proc_descr_t
     vm_mem_ptr_t SP;
     vm_mem_ptr_t CP;
     int8_t stack[VM_STACK_SIZE];
-    int8_t memory[VM_MEM_SIZE];
+    int8_t memory[VM_MEM_SIZE]; /* TODO: make mem and stack 32 bit */
     uint8_t code[VM_CODE_SIZE];
-    uint16_t current_observed_time;
-    uint16_t max_observed_time;
+    uint32_t current_observed_time;
+    uint32_t max_observed_time;
 };
 
 typedef struct vm_t vm_t;
 struct vm_t
 {
     vm_mem_ptr_t PP;
+    vm_mem_ptr_t NPP;
     vm_mem_ptr_t proc_table_size;
     vm_proc_descr_t proc_table[VM_PROC_TABLE_SIZE];
-    vm_uart_t uart;
-    uint16_t time;
+    vm_uart_t uart; /* TODO: rename UART to GPIO */
+    uint32_t time;
     uint8_t is_halted;
 };
 

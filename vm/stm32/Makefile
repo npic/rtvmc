@@ -1,6 +1,6 @@
 .PHONY: all clean
 
-INJECTION?=../../vm-tests/test-stm32/sysur.bin
+INJECTION?=../../vm-tests/test-rt/rt.bin
 
 INCLUDE=-I../include -I./include -I./drivers/bsp/stm32f4xx-nucleo -I./drivers/cmsis/device/st/stm32f4xx/include -I./drivers/cmsis/include -I./drivers/hal/include
 
@@ -11,7 +11,7 @@ clean:
 	${RM} *.o
 	${RM} ${DRIVERSOBJ}
 
-all: main.o vm.o vm_devices.o error.o stm32f4xx_it.o system_stm32f4xx.o ${DRIVERSOBJ}
+all: main.o vm.o vm_devices.o error.o stm32f4xx_it.o stm32f4xx_hal_msp.o system_stm32f4xx.o ${DRIVERSOBJ}
 
 vm.o: vm.c
 	sed -i -e '/INJECTION START/a'"$(shell xxd -i < ${INJECTION})" ./vm.c

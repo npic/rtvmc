@@ -5,7 +5,9 @@ errcode_t load_program(vm_t * vm, const char * filename)
 {
     vm_mem_ptr_t index, i, seek;
 
-    uint8_t injected_code[] = {
+    /* This array MUST go to .rodata to be put in flash instead of RAM */
+    /* do NOT touch INJECTION strings, the binary goes here on build */
+    static const uint8_t injected_code[] = {
         /* INJECTION START */
         /* INJECTION STOP */
     };

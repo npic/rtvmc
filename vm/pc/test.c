@@ -51,6 +51,7 @@ errcode_t test_step(test_t * test)
     char uart_out_char = 0;
     retval = reschedule(&test->uut);
     CHECK_OK(retval, "Failed to do scheduling\n");
+    test->uut.PP = test->uut.NPP;
     for (i = 0; i < test->uut.proc_table_size; i++)
     {
         if (test->uut.PP == i)
@@ -82,7 +83,9 @@ errcode_t test_step(test_t * test)
     CHECK_OK(retval, "Failed to dequeue from UART out\n");
     fprintf(test->uart_out, "%hu %hd\n", test->uut.time, (int16_t)uart_out_char);
     CHECK_NOT_FERROR(test->uart_out);
+    test->uut.proc_table[test->uut.PP].current_observed_time++;
     retval = step(&test->uut);
+    test->uut.time++;
     CHECK_OK(retval, "Failed to execute instruction\n");
     if (test->uut.time >= test->test_length)
     {

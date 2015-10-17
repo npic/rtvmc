@@ -59,6 +59,7 @@
 /******************************************************************************/
 /*            Cortex-M4 Processor Exceptions Handlers                         */
 /******************************************************************************/
+extern TIM_HandleTypeDef TimHandle;
 
 /**
   * @brief  This function handles NMI exception.
@@ -155,7 +156,17 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  HAL_IncTick();
+    /*HAL_IncTick();*/
+}
+
+/**
+  * @brief  This function handles TIM interrupt request.
+  * @param  None
+  * @retval None
+  */
+void TIM5_IRQHandler(void)
+{
+    HAL_TIM_IRQHandler(&TimHandle);
 }
 
 /******************************************************************************/

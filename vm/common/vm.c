@@ -11,6 +11,7 @@ errcode_t init_vm(vm_t * vm)
     CHECK_OK(retval, "Failed to init UART\n");
 
     vm->PP = 0;
+    vm->NPP = 0;
     vm->proc_table_size = 0;
 
     for (index = 0; index < VM_PROC_TABLE_SIZE; index++)
@@ -48,7 +49,7 @@ errcode_t init_vm(vm_t * vm)
 errcode_t reschedule(vm_t * vm)
 {
     vm_mem_ptr_t i;
-    vm->PP = 0;
+    vm->NPP = 0;
     for (i = 1; i < vm->proc_table_size; i++)
     {
         if (vm->time % vm->proc_table[i].period == 0)
@@ -62,9 +63,9 @@ errcode_t reschedule(vm_t * vm)
         }
         if (vm->proc_table[i].is_released)
         {
-            if ( (vm->PP == 0) || (vm->proc_table[i].period < vm->proc_table[vm->PP].period) )
+            if ( (vm->NPP == 0) || (vm->proc_table[i].period < vm->proc_table[vm->NPP].period) )
             {
-                vm->PP = i;
+                vm->NPP = i;
             }
         }
     }
@@ -76,9 +77,13 @@ errcode_t step(vm_t * vm)
     errcode_t retval;
     uint8_t opcode;
 
+    if (!vm->proc_table[vm->PP].is_released && vm->PP != 0)
+    {
+        /* a hard RT process has been completed, just wait for scheduler */
+        return OK;
+    }
     opcode = vm->proc_table[vm->PP].code[vm->proc_table[vm->PP].CP++];
 
-    vm->proc_table[vm->PP].current_observed_time++;
     switch (opcode)
     {
         case OPC_STOP:
@@ -167,7 +172,6 @@ errcode_t step(vm_t * vm)
             FAIL(BAD_OPCODE, "Unknown opcode\n");
             break;
     }
-    vm->time++;
     CHECK_OK_POSITIVE(retval, "");
 
     return OK;

@@ -1,0 +1,22 @@
+proc length 0 period 0
+stop
+proc length 7 period 1000
+push 1
+var x
+push $x
+store
+var x
+push $x
+get
+uartout
+stop
+proc length 7 period 1500
+push 0
+var x
+push $x
+store
+var x
+push $x
+get
+uartout
+stop
