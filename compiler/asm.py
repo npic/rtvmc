@@ -90,9 +90,9 @@ for line in program:
         current_proc.code_size += 1
     elif line[0] == "bor":
         current_proc.code_size += 1
-    elif line[0] == "uartin":
+    elif line[0] == "gpioin":
         current_proc.code_size += 1
-    elif line[0] == "uartout":
+    elif line[0] == "gpioout":
         current_proc.code_size += 1
     elif line[0] == "store":
         current_proc.code_size += 1
@@ -195,10 +195,10 @@ for line in program:
     elif line[0] == "bor":
         code.append(0x0F)
         current_offset += 1
-    elif line[0] == "uartin":
+    elif line[0] == "gpioin":
         code.append(0x10)
         current_offset += 1
-    elif line[0] == "uartout":
+    elif line[0] == "gpioout":
         code.append(0x11)
         current_offset += 1
     elif line[0] == "store":

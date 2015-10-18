@@ -13,6 +13,10 @@ errcode_t load_program(vm_t * vm, const char * filename)
     };
 
     vm->proc_table_size = injected_code[0];
+    if (vm->proc_table_size > VM_PROC_TABLE_SIZE)
+    {
+        FAIL(MEM_OVERFLOW, "Too many processes\n");
+    }
 
     for (index = 0, seek = 1; index < vm->proc_table_size; index++)
     {
@@ -26,6 +30,10 @@ errcode_t load_program(vm_t * vm, const char * filename)
 
         program_length = ((uint16_t)injected_code[seek++] << 8);
         program_length += (uint16_t)injected_code[seek++];
+        if (program_length > VM_CODE_SIZE)
+        {
+            FAIL(MEM_OVERFLOW, "Code too big\n");
+        }
 
         i = 0;
         while (i < program_length)

@@ -27,7 +27,7 @@ struct vm_t
     vm_mem_ptr_t NPP;
     vm_mem_ptr_t proc_table_size;
     vm_proc_descr_t proc_table[VM_PROC_TABLE_SIZE];
-    vm_uart_t uart; /* TODO: rename UART to GPIO */
+    /*vm_uart_t uart;*/
     uint32_t time;
     uint8_t is_halted;
 };

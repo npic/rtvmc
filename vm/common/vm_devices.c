@@ -1,5 +1,6 @@
 #include "vm_devices.h"
 
+/*
 errcode_t check_queue(uart_queue_t * q)
 {
     if (q->queue_start == q->queue_end)
@@ -52,4 +53,5 @@ errcode_t uart_read(vm_uart_t * uart, char * result)
     CHECK_OK(retval, "Failed to dequeue from the UART queue\n");
     return OK;
 }
+*/
 

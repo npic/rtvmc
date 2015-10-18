@@ -7,8 +7,12 @@ errcode_t init_vm(vm_t * vm)
     errcode_t retval;
     vm_mem_ptr_t i, index;
 
+    /*
     retval = init_uart(&vm->uart);
     CHECK_OK(retval, "Failed to init UART\n");
+    */
+    retval = init_hw();
+    CHECK_OK(retval, "Failed to init hardware\n");
 
     vm->PP = 0;
     vm->NPP = 0;
@@ -134,11 +138,19 @@ errcode_t step(vm_t * vm)
         case OPC_BOR:
             retval = op_bor(vm);
             break;
+        /*
         case OPC_UARTIN:
             retval = op_uartin(vm);
             break;
         case OPC_UARTOUT:
             retval = op_uartout(vm);
+            break;
+        */
+        case OPC_GPIOIN:
+            retval = op_gpioin(vm);
+            break;
+        case OPC_GPIOOUT:
+            retval = op_gpioout(vm);
             break;
         case OPC_STORE:
             retval = op_store(vm);

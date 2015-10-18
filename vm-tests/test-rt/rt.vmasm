@@ -5,18 +5,20 @@ push 1
 var x
 push $x
 store
+push 5
 var x
 push $x
 get
-uartout
+gpioout
 stop
 proc length 7 period 1500
 push 0
 var x
 push $x
 store
+push 5
 var x
 push $x
 get
-uartout
+gpioout
 stop

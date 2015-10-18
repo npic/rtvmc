@@ -59,10 +59,12 @@ int ex(nodeType *p) {
                     break;
                 case OUTPUT:     
                     ex(p->opr.op[0]);
-                    printf("uartout\n");
+                    ex(p->opr.op[1]);
+                    printf("gpioout\n");
                     break;
                 case INPUT:     
-                    printf("uartin\n");
+                    ex(p->opr.op[0]);
+                    printf("gpioin\n");
                     printf("push $%c\n", p->opr.op[0]->id.i + 'a');
                     printf("store\n");
                     break;

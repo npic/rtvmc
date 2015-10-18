@@ -21,8 +21,12 @@
 #define OPC_BNOT 0x0D
 #define OPC_BAND 0x0E
 #define OPC_BOR 0x0F
+#define OPC_GPIOIN 0x10
+#define OPC_GPIOOUT 0x11
+/*
 #define OPC_UARTIN 0x10
 #define OPC_UARTOUT 0x11
+*/
 #define OPC_STORE 0x12
 #define OPC_GET 0x13
 #define OPC_JT 0x14
@@ -48,8 +52,12 @@ errcode_t op_or(vm_t * vm);
 errcode_t op_bnot(vm_t * vm);
 errcode_t op_band(vm_t * vm);
 errcode_t op_bor(vm_t * vm);
+errcode_t op_gpioin(vm_t * vm);
+errcode_t op_gpioout(vm_t * vm);
+/*
 errcode_t op_uartin(vm_t * vm);
 errcode_t op_uartout(vm_t * vm);
+*/
 errcode_t op_store(vm_t * vm);
 errcode_t op_get(vm_t * vm);
 errcode_t op_jt(vm_t * vm);

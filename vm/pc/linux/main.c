@@ -2,10 +2,11 @@
 #include "test.h"
 #include "vm.h"
 
+test_t test;
+
 int main(int argc, char ** argv)
 {
     errcode_t retval;
-    static test_t test;
 
     if (argc != 3)
     {

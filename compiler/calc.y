@@ -63,8 +63,8 @@ stmt:
           ';'                            { $$ = opr(';', 2, NULL, NULL); }
         | expr ';'                       { $$ = $1; }
         | RETURN ';'                     { $$ = opr(RETURN, 0); }
-        | OUTPUT expr ';'                { $$ = opr(OUTPUT, 1, $2); }
-        | INPUT VARIABLE ';'             { $$ = opr(INPUT, 1, id($2)); }
+        | OUTPUT expr expr ';'           { $$ = opr(OUTPUT, 2, $2, $3); }
+        | INPUT expr VARIABLE ';'        { $$ = opr(INPUT, 2, $2, id($3)); }
         | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
         | WHILE '(' expr ')' stmt        { $$ = opr(WHILE, 2, $3, $5); }
         | IF '(' expr ')' stmt %prec IFX { $$ = opr(IF, 2, $3, $5); }

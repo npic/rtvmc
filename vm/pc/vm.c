@@ -12,6 +12,10 @@ errcode_t load_program(vm_t * vm, const char * filename)
 
     fread(&vm->proc_table_size, 1, 1, in);
     CHECK_NOT_FERROR(in);
+    if (vm->proc_table_size > VM_PROC_TABLE_SIZE)
+    {
+        FAIL(MEM_OVERFLOW, "Too many processes\n");
+    }
 
     for (index = 0; index < vm->proc_table_size; index++)
     {
@@ -39,7 +43,7 @@ errcode_t load_program(vm_t * vm, const char * filename)
         program_length += (uint16_t)byte_of_data;
         if (program_length > VM_CODE_SIZE)
         {
-            return MEM_OVERFLOW;
+            FAIL(MEM_OVERFLOW, "Code too big\n");
         }
 
         i = 0;

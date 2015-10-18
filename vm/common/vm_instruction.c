@@ -22,7 +22,7 @@ errcode_t op_push(vm_t * vm)
     int32_t arg = (int32_t)read_32_bit((void *)&vm->proc_table[vm->PP].code[vm->proc_table[vm->PP].CP]);
     if (vm->proc_table[vm->PP].CP + sizeof(uint32_t) > VM_CODE_SIZE)
     {
-        return MEM_OVERFLOW;
+        FAIL(MEM_OVERFLOW, "Process tried to read past the end of its code segment\n");
     }
     vm->proc_table[vm->PP].CP += sizeof(uint32_t);
     retval = stack_push(vm, &arg);
@@ -203,6 +203,37 @@ errcode_t op_bor(vm_t * vm)
     return OK;
 }
 
+errcode_t op_gpioin(vm_t * vm)
+{
+    errcode_t retval;
+    uint8_t result = 0;
+    int32_t result32;
+    int32_t pin;
+    retval = stack_pop(vm, &pin);
+    CHECK_OK(retval, "Failed to pop output pin number from the stack\n");
+    retval = gpio_get((uint32_t)pin, &result);
+    CHECK_OK(retval, "Failed to read from the GPIO pin\n");
+    result32 = (int32_t)result;
+    retval = stack_push(vm, &result32);
+    CHECK_OK(retval, "Failed to push result into the stack\n");
+    return OK;
+}
+
+errcode_t op_gpioout(vm_t * vm)
+{
+    errcode_t retval;
+    int32_t pin;
+    int32_t value = 0;
+    retval = stack_pop(vm, &value);
+    CHECK_OK(retval, "Failed to pop op from the stack\n");
+    retval = stack_pop(vm, &pin);
+    CHECK_OK(retval, "Failed to pop output pin number from the stack\n");
+    retval = gpio_set((uint32_t)pin, (value ? 1 : 0));
+    CHECK_OK(retval, "Failed to write to the GPIO pin\n");
+    return OK;
+}
+
+/*
 errcode_t op_uartin(vm_t * vm)
 {
     errcode_t retval;
@@ -223,9 +254,10 @@ errcode_t op_uartout(vm_t * vm)
     retval = stack_pop(vm, &c);
     CHECK_OK(retval, "Failed to pop op from the stack\n");
     retval = uart_write(&vm->uart, (char)(c & 0x000000FF));
-    CHECK_OK(retval, "Failed to read from the UART queue\n");
+    CHECK_OK(retval, "Failed to write to the UART queue\n");
     return OK;
 }
+*/
 
 errcode_t op_store(vm_t * vm)
 {
@@ -267,7 +299,7 @@ errcode_t op_jt(vm_t * vm)
         vm->proc_table[vm->PP].CP += offset;
         if (vm->proc_table[vm->PP].CP >= VM_CODE_SIZE)
         {
-            return MEM_OVERFLOW;
+            FAIL(MEM_OVERFLOW, "Process tried to read past the end of its code segment\n");
         }
     }
     return OK;

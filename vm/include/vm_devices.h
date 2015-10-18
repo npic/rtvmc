@@ -4,6 +4,7 @@
 #include "config.h"
 #include "error.h"
 
+/*
 typedef struct uart_queue_t uart_queue_t;
 struct uart_queue_t
 {
@@ -25,6 +26,11 @@ errcode_t enqueue(uart_queue_t * q, char c);
 errcode_t dequeue(uart_queue_t * q, char * result);
 errcode_t uart_write(vm_uart_t * uart, char c);
 errcode_t uart_read(vm_uart_t * uart, char * result);
+*/
+
+errcode_t init_hw();
+errcode_t gpio_get(uint32_t pin, uint8_t * result);
+errcode_t gpio_set(uint32_t pin, uint8_t value);
 
 #endif
 
