@@ -13,11 +13,11 @@ struct vm_proc_descr_t
     uint8_t is_released;
     vm_mem_ptr_t SP;
     vm_mem_ptr_t CP;
-    int8_t stack[VM_STACK_SIZE];
-    int8_t memory[VM_MEM_SIZE]; /* TODO: make mem and stack 32 bit */
+    int32_t stack[VM_STACK_SIZE];
+    int32_t memory[VM_MEM_SIZE];
     uint8_t code[VM_CODE_SIZE];
-    uint32_t current_observed_time;
-    uint32_t max_observed_time;
+    uint16_t current_observed_time;
+    uint16_t max_observed_time;
 };
 
 typedef struct vm_t vm_t;
@@ -36,9 +36,9 @@ errcode_t init_vm(vm_t * vm);
 errcode_t load_program(vm_t * vm, const char * filename);
 errcode_t reschedule(vm_t * vm);
 errcode_t step(vm_t * vm);
-uint16_t read_16_bit(void * data); /* TODO: do we need this? */
-errcode_t stack_push(vm_t * vm, int8_t * val);
-errcode_t stack_pop(vm_t * vm, int8_t * val);
+uint32_t read_32_bit(void * data);
+errcode_t stack_push(vm_t * vm, int32_t * val);
+errcode_t stack_pop(vm_t * vm, int32_t * val);
 
 #endif
 

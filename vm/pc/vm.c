@@ -37,6 +37,10 @@ errcode_t load_program(vm_t * vm, const char * filename)
         fread(&byte_of_data, 1, 1, in);
         CHECK_NOT_FERROR(in);
         program_length += (uint16_t)byte_of_data;
+        if (program_length > VM_CODE_SIZE)
+        {
+            return MEM_OVERFLOW;
+        }
 
         i = 0;
         while( (!feof(in)) && (i < program_length) )

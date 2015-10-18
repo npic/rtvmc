@@ -2,10 +2,17 @@
 
 import sys
 
+def mk32bit(number):
+    b1 = (number / 2**24) % 256
+    b2 = (number / 2**16) % 256
+    b3 = (number / 2**8) % 256
+    b4 = number % 256
+    return [b1, b2, b3, b4]
+
 def mk16bit(number):
-    hi = (number / 256) % 256
-    lo = number % 256
-    return [hi, lo]
+    b1 = (number / 2**8) % 256
+    b2 = number % 256
+    return [b1, b2]
 
 class Process:
     def __init__(self, ci, ti):
@@ -56,7 +63,7 @@ for line in program:
     elif line[0] == "nop":
         current_proc.code_size += 1
     elif line[0] == "push":
-        current_proc.code_size += 2
+        current_proc.code_size += 5
     elif line[0] == "bxor":
         current_proc.code_size += 1
     elif line[0] == "drop":
@@ -141,14 +148,14 @@ for line in program:
         current_offset += 1
     elif line[0] == "push":
         code.append(0x02)
-        current_offset += 2
+        current_offset += 5
         value = line[1]
         if value.startswith("@"):
-            code.append(procs[i].labels[value[1:]] - current_offset - 1)
+            code += mk32bit(procs[i].labels[value[1:]] - current_offset - 1)
         elif value.startswith("$"):
-            code.append(procs[i].variables[value[1:]])
+            code += mk32bit(procs[i].variables[value[1:]])
         else:
-            code.append(int(value))
+            code += mk32bit(int(value))
     elif line[0] == "bxor":
         code.append(0x03)
         current_offset += 1

@@ -177,28 +177,31 @@ errcode_t step(vm_t * vm)
     return OK;
 }
 
-uint16_t read_16_bit(void * data)
+uint32_t read_32_bit(void * data)
 {
-    return (*((uint8_t*)data) << 8) + *((uint8_t*)data + 1);
+    return (*((uint8_t*)data) << 24)
+         + (*((uint8_t*)data + 1) << 16)
+         + (*((uint8_t*)data + 2) << 8)
+         + (*((uint8_t*)data + 3));
 }
 
-errcode_t stack_push(vm_t * vm, int8_t * val)
+errcode_t stack_push(vm_t * vm, int32_t * val)
 {
     if (vm->proc_table[vm->PP].SP == VM_STACK_SIZE)
     {
         FAIL(MEM_OVERFLOW, "Stack overflow\n");
     }
-    memcpy(&(vm->proc_table[vm->PP].stack[vm->proc_table[vm->PP].SP++]), val, sizeof(int8_t));
+    memcpy(&(vm->proc_table[vm->PP].stack[vm->proc_table[vm->PP].SP++]), val, sizeof(int32_t));
     return OK;
 }
 
-errcode_t stack_pop(vm_t * vm, int8_t * val)
+errcode_t stack_pop(vm_t * vm, int32_t * val)
 {
     if (vm->proc_table[vm->PP].SP == 0)
     {
         FAIL(MEM_OVERFLOW, "Stack underflow\n");
     }
-    memcpy(val, &(vm->proc_table[vm->PP].stack[--vm->proc_table[vm->PP].SP]), sizeof(int8_t));
+    memcpy(val, &(vm->proc_table[vm->PP].stack[--vm->proc_table[vm->PP].SP]), sizeof(int32_t));
     return OK;
 }
 
