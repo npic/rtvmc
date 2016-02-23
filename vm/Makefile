@@ -1,4 +1,4 @@
-.PHONY: all linux stm32 windows sdk load_stm32 load_sdk clean_linux clean_stm32 clean_windows clean_sdk
+.PHONY: all linux stm32 windows dos sdk load_stm32 load_sdk clean_linux clean_stm32 clean_windows clean_dos clean_sdk
 
 CC=gcc
 CFLAGS=-g -O0 -Wall -Wextra -Werror
@@ -12,8 +12,7 @@ RM=
 export
 
 all:
-	${info Valid targets are: linux stm32 windows sdk load_stm32 load_sdk clean_linux clean_stm32 clean_windows clean_sdk}
-	${info NOTE: windows and sdk ports do not work (yet?)}
+	${info Valid targets are: linux stm32 windows dos sdk load_stm32 load_sdk clean_linux clean_stm32 clean_windows clean_dos clean_sdk}
 
 linux: CFLAGS+=-pedantic -std=c89
 linux:
@@ -31,11 +30,21 @@ stm32:
 	${CC} ${LDFLAGS} -o vm.elf common/vm.o common/vm_devices.o common/vm_instruction.o stm32/*.o stm32/drivers/hal/src/*.o stm32/drivers/bsp/stm32f4xx-nucleo/*.o stm32/drivers/cmsis/device/st/stm32f4xx/src/startup_stm32f401xe.o
 	${OBJCOPY} -Oihex vm.elf vm.hex
 
-#windows:
-#	${MAKE} -C common pc
-#	${MAKE} -C pc windows
-#	${CC} -o vm.exe common/vm.o common/vm_devices.o common/vm_instruction.o pc/vm.o pc/error.o pc/test.o pc/windows/main.o pc/windows/vm_devices.o
-#
+windows: CFLAGS+=-pedantic -std=c89
+windows:
+	${MAKE} -C common pc
+	${MAKE} -C pc windows
+	${CC} -o vm.exe common/vm.o common/vm_devices.o common/vm_instruction.o pc/vm.o pc/error.o pc/test.o pc/linux/main.o pc/linux/vm_devices.o
+
+dos: CFLAGS+=-pedantic -std=gnu89
+dos:
+	${MAKE} -C common pc
+	${MAKE} -C pc dos
+	${CC} -o vm.exe common/vm.o common/vm_devices.o common/vm_instruction.o pc/vm.o pc/error.o pc/dos/main.o pc/dos/vm_devices.o
+
+sdk load_sdk clean_sdk:
+	${info SDK 1.1 port is not implemented yet}
+
 #sdk: CC=C:/sdcc320/bin/sdcc
 #sdk: CFLAGS=--Werror --stack-auto --code-loc 0x2100 --xram-loc 0x6D00 --stack-loc 0x80
 #sdk:
@@ -64,12 +73,18 @@ clean_stm32:
 	${RM} vm.elf
 	${RM} vm.hex
 
-#clean_windows: RM=del
-#clean_windows:
-#	${MAKE} -C common clean_pc
-#	${MAKE} -C pc clean_windows
-#	${RM} vm.exe
-#
+clean_windows: RM=del
+clean_windows:
+	${MAKE} -C common clean_pc
+	${MAKE} -C pc clean_windows
+	${RM} vm.exe
+
+clean_dos: RM=del
+clean_dos:
+	${MAKE} -C common clean_pc
+	${MAKE} -C pc clean_dos
+	${RM} vm.exe
+
 #clean_sdk: RM=del
 #clean_sdk:
 #	${MAKE} -C common clean_sdk

@@ -1,12 +1,14 @@
-.PHONY: all linux windows pc clean_linux clean_windows clean_pc
+.PHONY: all linux windows dos pc clean_linux clean_windows clean_dos clean_pc
 
 INCLUDE=-I../include -I./include
 
 clean_linux: clean_pc
 	${MAKE} -C linux clean
 
-clean_windows: clean_pc
-	${MAKE} -C windows clean
+clean_windows: clean_linux
+
+clean_dos: clean_pc
+	${MAKE} -C dos clean
 
 clean_pc:
 	${RM} *.o
@@ -17,8 +19,10 @@ all:
 linux: pc
 	${MAKE} -C linux all
 
-windows: pc
-	${MAKE} -C windows all
+windows: linux
+
+dos: pc
+	${MAKE} -C dos all
 
 pc: vm.o error.o test.o
 

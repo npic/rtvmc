@@ -1,0 +1,16 @@
+proc length 0 period 0
+stop
+proc length 1 period 5
+push 5
+var x
+push $x
+get
+gpioout
+var x
+push $x
+get
+not
+var x
+push $x
+store
+stop

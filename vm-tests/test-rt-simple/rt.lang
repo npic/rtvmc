@@ -1,0 +1,8 @@
+process soft {;}
+
+process Ci=1 Ti=5
+{
+    output 5 x;
+    x = !x;
+}
+
