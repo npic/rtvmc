@@ -288,15 +288,15 @@ errcode_t op_get(vm_t * vm)
 errcode_t op_jt(vm_t * vm)
 {
     errcode_t retval;
-    int32_t offset;
+    int32_t addr;
     int32_t cond;
-    retval = stack_pop(vm, &offset);
+    retval = stack_pop(vm, &addr);
     CHECK_OK(retval, "Failed to pop offset from the stack\n");
     retval = stack_pop(vm, &cond);
     CHECK_OK(retval, "Failed to pop condition from the stack\n");
     if (cond)
     {
-        vm->proc_table[vm->PP].CP += offset;
+        vm->proc_table[vm->PP].CP = addr;
         if (vm->proc_table[vm->PP].CP >= VM_CODE_SIZE)
         {
             FAIL(MEM_OVERFLOW, "Process tried to read past the end of its code segment\n");

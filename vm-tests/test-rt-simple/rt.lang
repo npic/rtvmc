@@ -1,6 +1,6 @@
 process soft {;}
 
-process Ci=1 Ti=5
+process Ci=0 Ti=1
 {
     output 5 x;
     x = !x;

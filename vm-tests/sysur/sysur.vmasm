@@ -1,0 +1,143 @@
+proc length 0 period 0
+stop
+proc length 75 period 500
+push 5
+gpioin
+push $f
+store
+push 5
+gpioin
+push $f
+store
+push 5
+gpioin
+push $f
+store
+push 5
+gpioin
+push $f
+store
+push 5
+gpioin
+push $f
+store
+push 5
+gpioin
+push $f
+store
+var c
+push $c
+get
+var e
+push $e
+get
+mul
+var b
+push $b
+get
+var f
+push $f
+get
+mul
+sub
+var a
+push $a
+get
+var e
+push $e
+get
+mul
+var b
+push $b
+get
+var d
+push $d
+get
+mul
+sub
+div
+var x
+push $x
+store
+var a
+push $a
+get
+var f
+push $f
+get
+mul
+var c
+push $c
+get
+var d
+push $d
+get
+mul
+sub
+var a
+push $a
+get
+var e
+push $e
+get
+mul
+var b
+push $b
+get
+var d
+push $d
+get
+mul
+sub
+div
+var y
+push $y
+store
+push 5
+var x
+push $x
+get
+gpioout
+push 5
+var y
+push $y
+get
+gpioout
+stop
+proc length 323 period 500
+push 0
+var a
+push $a
+store
+L000:
+var a
+push $a
+get
+push 20
+lt
+not
+push @L001
+jt
+var a
+push $a
+get
+push 1
+add
+var a
+push $a
+store
+var a
+push $a
+get
+push 14
+eq
+not
+push @L002
+jt
+stop
+L002:
+push 1
+push @L000
+jt
+L001:
+stop

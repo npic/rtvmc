@@ -2,18 +2,18 @@ process soft {;}
 
 process Ci=75 Ti=500
 {
-    input a;
-    input b;
-    input c;
-    input d;
-    input e;
-    input f;
+    input 5 a;
+    input 5 b;
+    input 5 c;
+    input 5 d;
+    input 5 e;
+    input 5 f;
 
     x = (c*e - b*f) / (a*e - b*d);
     y = (a*f - c*d) / (a*e - b*d);
 
-    output x;
-    output y;
+    output 5 x;
+    output 5 y;
 }
 
 process Ci=323 Ti=500

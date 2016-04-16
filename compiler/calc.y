@@ -28,7 +28,6 @@ int sym[26];                    /* symbol table */
 %token WHILE IF OUTPUT INPUT RETURN QUOTE PROCESS CI TI SOFT
 %nonassoc IFX
 %nonassoc ELSE
-
 %left OR
 %left AND
 %left '|'
@@ -40,23 +39,30 @@ int sym[26];                    /* symbol table */
 %left '*' '/' '%'
 %nonassoc UMINUS '~' '!'
 
-%type <nPtr> stmt expr stmt_list prochdr
+%type <nPtr> stmt expr stmt_list softprochdr hardprochdr
 
 %%
 
 program:
-        function                { exit(0); }
+        softproc hardprocs        { exit(0); }
         ;
 
-function:
-          function prochdr stmt         { ex($2); ex($3); printf("stop\n"); freeNode($2); freeNode($3); }
+softproc:
+        softprochdr stmt        { ex($1); ex($2); printf("stop\n"); freeNode($1); freeNode($2); }
+        ;
+
+softprochdr:
+        PROCESS SOFT        { $$ = hdr(0, 0); }
+        ;
+
+hardprocs:
+          hardprocs hardprochdr stmt        { ex($2); ex($3); printf("stop\n"); freeNode($2); freeNode($3); }
         | /* NULL */
         ;
 
-prochdr:
-          PROCESS CI '=' INTEGER TI '=' INTEGER       { $$ = hdr($4, $7); }
-        | PROCESS TI '=' INTEGER CI '=' INTEGER       { $$ = hdr($7, $4); }
-        | PROCESS SOFT                                { $$ = hdr(0, 0); }
+hardprochdr:
+          PROCESS CI '=' INTEGER TI '=' INTEGER        { $$ = hdr($4, $7); }
+        | PROCESS TI '=' INTEGER CI '=' INTEGER        { $$ = hdr($7, $4); }
         ;
 
 stmt:

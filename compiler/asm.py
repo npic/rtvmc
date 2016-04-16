@@ -119,6 +119,9 @@ for line in program:
 procs.append(current_proc)
 
 N = len(procs)
+if N == 0:
+    print "No processes defined"
+    sys.exit(1)
 code = [N]
 i = None
 current_offset = None
@@ -151,7 +154,7 @@ for line in program:
         current_offset += 5
         value = line[1]
         if value.startswith("@"):
-            code += mk32bit(procs[i].labels[value[1:]] - current_offset - 1)
+            code += mk32bit(procs[i].labels[value[1:]])
         elif value.startswith("$"):
             code += mk32bit(procs[i].variables[value[1:]])
         else:
