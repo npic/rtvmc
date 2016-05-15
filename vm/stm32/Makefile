@@ -1,6 +1,6 @@
 .PHONY: all clean
 
-INJECTION?=../../vm-tests/test-rt-simple/rt.bin
+INJECTION?=../../vm-tests/test-rt/rt.bin
 
 INCLUDE=-I../include -I./include -I./drivers/bsp/stm32f4xx-nucleo -I./drivers/cmsis/device/st/stm32f4xx/include -I./drivers/cmsis/include -I./drivers/hal/include
 

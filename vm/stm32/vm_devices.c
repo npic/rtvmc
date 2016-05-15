@@ -25,36 +25,46 @@ errcode_t init_uart(vm_uart_t * uart)
 
 errcode_t init_hw()
 {
+    int i;
     HAL_Init();
     SystemClock_Config();
-    BSP_LED_Init(LED2);
+    
+    /* Enable the GPIO Clock */
+    __GPIOA_CLK_ENABLE();
+    for(i = 4; i < 12; i++)
+    {
+        GPIO_InitTypeDef GPIO_InitStruct;
+        
+        /* Configure the GPIO_LED pin */
+        GPIO_InitStruct.Pin = 1 << i;
+        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+        GPIO_InitStruct.Pull = GPIO_PULLUP;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+        
+        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+        
+        HAL_GPIO_WritePin(GPIOA, 1 << i, GPIO_PIN_RESET); 
+    }
     return OK;
 }
 
 errcode_t gpio_get(uint32_t pin, uint8_t * result)
 {
-    /*TODO*/
+    if(pin >= PIN_COUNT)
+    {
+        Error_Handler();
+    }
+    *result = (HAL_GPIO_ReadPin(GPIOA, 1 << pin) ? 1 : 0);
     return OK;
 }
 
 errcode_t gpio_set(uint32_t pin, uint8_t value)
 {
-    /*TODO*/
-    switch (pin)
+    if(pin >= PIN_COUNT)
     {
-        case 5:
-            if (value)
-            {
-                BSP_LED_On(LED2);
-            }
-            else
-            {
-                BSP_LED_Off(LED2);
-            }
-            break;
-        default:
-            break;
+        Error_Handler();
     }
+    HAL_GPIO_WritePin(GPIOA, 1 << pin, (value ? GPIO_PIN_SET : GPIO_PIN_RESET));
     return OK;
 }
 
@@ -166,8 +176,8 @@ HAL_StatusTypeDef HAL_InitTick (uint32_t TickPriority)
        + ClockDivision = 0
        + Counter direction = Up
        */
-    /* TimHandle.Init.Period = (1000000 / 1000) - 1; */ /* 1 ms */
-    TimHandle.Init.Period = (1000000 / 40000) - 1; /* 75 us */
+    TimHandle.Init.Period = (1000000 / 1000) - 1; /* 1 ms */
+    /*TimHandle.Init.Period = (1000000 / 40000) - 1;*/ /* 75 us */
     TimHandle.Init.Prescaler = uwPrescalerValue;
     TimHandle.Init.ClockDivision = 0;
     TimHandle.Init.CounterMode = TIM_COUNTERMODE_UP;

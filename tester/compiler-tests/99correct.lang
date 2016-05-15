@@ -1,0 +1,36 @@
+process soft {
+;
+}
+
+process Ci=1 Ti=10 {
+	a = 1;
+	b = 0;
+	while(a) {
+		a = 0;
+		b = 1;
+	}
+	while(b) b = 0;
+	while(1);
+}
+
+process Ci=1 Ti=10 {
+	a = 1;
+	b = 0;
+	if(b) a = 50;
+	else if(a) {
+		b = 3;
+	} else
+	{
+		a = 1;
+		b = 1;
+	}
+}
+
+process Ci = 1 Ti = 5
+{
+	input 5 a;
+	output a 1;
+	b = (a + a) * (a - 1) + 8 / (6 - 4) % a;
+	c = a || a && b;
+	d = a ^ b | a & b;
+}

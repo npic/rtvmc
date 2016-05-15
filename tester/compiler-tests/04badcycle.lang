@@ -1,0 +1,5 @@
+process soft {
+	while() {
+		a = 5;
+	}
+}

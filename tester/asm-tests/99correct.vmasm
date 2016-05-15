@@ -1,0 +1,37 @@
+proc length 2 period 10
+var x
+var x
+var y
+push $x
+push @label
+label:
+push 5
+stop
+
+proc length 2 period 10
+stop
+nop
+bxor
+drop
+add
+sub
+mul
+div
+mod
+not
+and
+or
+bnot
+band
+bor
+gpioin
+gpioout
+store
+get
+jt
+eq
+neq
+geq
+leq
+gt
+lt

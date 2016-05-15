@@ -1,0 +1,10 @@
+process soft {;}
+
+process Ci=1 Ti=10 {
+	output 0 1;
+	output 1 1;
+}
+
+process Ci=4 Ti=10 {
+	output 2 1;
+}

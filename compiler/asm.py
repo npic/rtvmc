@@ -49,8 +49,8 @@ for line in program:
             elif line[i] == "length":
                 length = int(line[i+1])
             else:
-                print line[i]
-                print "Unknown directive of proc"
+                print >> sys.stderr, line[i]
+                print >> sys.stderr, "Unknown directive of proc"
                 sys.exit(1)
         current_proc = Process(length, period)
         continue
@@ -113,14 +113,15 @@ for line in program:
     elif line[0] == "lt":
         current_proc.code_size += 1
     else:
-        print line[0]
-        print "Unknown opcode"
+        print >> sys.stderr, line[0]
+        print >> sys.stderr, "Unknown opcode"
         sys.exit(1)
-procs.append(current_proc)
+if current_proc is not None:
+    procs.append(current_proc)
 
 N = len(procs)
 if N == 0:
-    print "No processes defined"
+    print >> sys.stderr, "No processes defined"
     sys.exit(1)
 code = [N]
 i = None
@@ -232,15 +233,15 @@ for line in program:
         code.append(0x1A)
         current_offset += 1
     else:
-        print line[0]
-        print "Uknown opcode"
+        print >> sys.stderr, line[0]
+        print >> sys.stderr, "Uknown opcode"
         sys.exit(1)
 
 U = sum( [float(procs[i].length) / float(procs[i].period) for i in range(1, N)] )
 threshold = (N-1.0) * (2.0 ** (1.0 / (N-1.0)) - 1.0)
 if U > threshold:
-    print U, ">", threshold
-    print "Task set is not surely schedulable - aborting"
+    print >> sys.stderr, U, ">", threshold
+    print >> sys.stderr, "Task set is not surely schedulable - aborting"
     sys.exit(2)
 
 code = map(lambda x: 256 + x if x < 0 else x, code)

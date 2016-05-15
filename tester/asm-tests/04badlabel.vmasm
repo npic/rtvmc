@@ -1,0 +1,3 @@
+proc length 1 period 10
+push @
+stop
